@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 8",
+	"properties": {
+		"content": {
+			"query": "SET ANSI_NULLS ON\nGO\nSET QUOTED_IDENTIFIER ON\nGO\n\nCREATE TABLE [prod].[Providers_replicated]\n( \n\t[npi] [int]  NULL,\n\t[LastName] [varchar](100)  NULL,\n\t[FirstName] [varchar](50)  NULL,\n\t[FullName] [varchar](150)  NULL,\n\t[Year] [int]  NULL,\n\t[YearNPI] [int]  NOT NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\nCREATE TABLE prod.Geography_heap with (DISTRIBUTION=round_robin,heap)\nas select * from prod.Geography\n\nCREATE TABLE prod.drugs_heap with (DISTRIBUTION=round_robin,heap)\nas select * from prod.drugs_heap\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

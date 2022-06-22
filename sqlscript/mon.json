@@ -1,0 +1,17 @@
+{
+	"name": "mon",
+	"properties": {
+		"content": {
+			"query": "select *from sys.dm_pdw_exec_requests where status ='running'\n\nselect * from stg.drugs\n\n\ndrop table stg.Drugs;\ndrop table stg.Geography;\ndrop table stg.Providers;\ndrop table stg.Specialty;\ndrop table stg.States;\ndrop table stg.Details;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

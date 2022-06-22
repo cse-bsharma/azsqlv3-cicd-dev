@@ -1,0 +1,63 @@
+{
+	"name": "increment_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "increment_load",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "spark_increment",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "azsqldw",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[stg].[increment]",
+					"storedProcedureParameters": {
+						"year": {
+							"value": "2018",
+							"type": "Int32"
+						}
+					}
+				}
+			},
+			{
+				"name": "spark_increment",
+				"type": "SynapseNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "increment_spark",
+						"type": "NotebookReference"
+					},
+					"snapshot": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-09-20T06:29:55Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

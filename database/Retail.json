@@ -1,0 +1,27 @@
+{
+	"name": "Retail",
+	"properties": {
+		"Name": "Retail",
+		"EntityType": "DATABASE",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"IsSyMSCDMDatabase": true,
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"0.1.0\"}}}",
+			"x-ms-usageinfo": "AzureSynapseDatabaseTemplate"
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Retail",
+			"Properties": {
+				"FormatType": "parquet",
+				"LinkedServiceName": "azsqlv3-WorkspaceDefaultStorage"
+			}
+		},
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 2,
+		"ObjectId": "7c7067fb-6858-4e63-991b-2db78886d0c7"
+	},
+	"type": "DATABASE"
+}

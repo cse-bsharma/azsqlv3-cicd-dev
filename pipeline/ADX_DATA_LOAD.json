@@ -1,0 +1,158 @@
+{
+	"name": "ADX_DATA_LOAD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Metadata Refresh",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "intErrorId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "intErrorId",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "txtServiceURL",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtServiceURL",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "txtApplication",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtApplication",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "txtModule",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtModule",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "txtFeature",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtFeature",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "txtServiceType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtServiceType",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "txtModifiedBy",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "txtModifiedBy",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "dtload",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "dtload",
+									"type": "String",
+									"physicalType": "string"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedTextadx",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureDataExplorer",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-05-23T15:10:50Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

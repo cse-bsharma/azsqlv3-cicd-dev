@@ -1,0 +1,26 @@
+{
+	"name": "relationship-nutxhjihao",
+	"properties": {
+		"Name": "relationship-nutxhjihao",
+		"EntityType": "RELATIONSHIP",
+		"Namespace": {
+			"DatabaseName": "Retail"
+		},
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"FromTableName": "City",
+		"ToTableName": "address",
+		"ColumnRelationshipInformations": [
+			{
+				"FromColumnName": "CityName",
+				"ToColumnName": "cityName"
+			}
+		],
+		"RelationshipType": 0,
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 1,
+		"ObjectId": "1ea94049-de8b-48cf-af39-bba1e8629841"
+	},
+	"type": "RELATIONSHIP"
+}

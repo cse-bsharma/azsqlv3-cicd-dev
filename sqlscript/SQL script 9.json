@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 9",
+	"properties": {
+		"content": {
+			"query": "CREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \nWITH ( FORMAT_TYPE = PARQUET)\n\n\n\nCREATE EXTERNAL DATA SOURCE [arturvdlake_arturvstor_dfs_core_windows_net] \nWITH (\nLOCATION = 'abfss://arturvdlake@arturvstor.dfs.core.windows.net',TYPE = HADOOP)\n\ndrop EXTERNAL TABLE NewTest \nCREATE EXTERNAL TABLE NewTest ([col1] DATETIME2\n    )\n    WITH (\n    LOCATION = 'ClearSale/pandas_parquet_int96_notworking.parquet',\n    DATA_SOURCE = [arturvdlake_arturvstor_dfs_core_windows_net],\n    FILE_FORMAT = [SynapseParquetFormat]\n    )\n\n\nSELECT TOP(10) * FROM dbo.NewTest\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

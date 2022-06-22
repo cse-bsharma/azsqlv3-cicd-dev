@@ -1,0 +1,459 @@
+{
+	"name": "adx",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkload",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "112g",
+			"driverCores": 16,
+			"executorMemory": "112g",
+			"executorCores": 16,
+			"numExecutors": 1,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "1",
+				"spark.autotune.trackingId": "75ad77d2-a080-4a53-96e1-69902aa4d679"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Synapse/workspaces/azsqlv3/bigDataPools/sparkload",
+				"name": "sparkload",
+				"type": "Spark",
+				"endpoint": "https://azsqlv3.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkload",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 16,
+				"memory": 112,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql import SparkSession\r\n",
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql import Row\r\n",
+					"from pyspark.sql.types import StructField, StructType, StringType, LongType"
+				],
+				"attachments": null,
+				"execution_count": 35
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Load the avro file into a dataframe\r\n",
+					"account_name = \"azdwsynapse\"\r\n",
+					"container_name= \"adx\"\r\n",
+					"relative_path = \"test.avro\"\r\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name,relative_path)\r\n",
+					"print(adls_path)\r\n",
+					"df=spark.read.format(\"avro\").option(\"inferSchema\", \"true\").load(adls_path)"
+				],
+				"attachments": null,
+				"execution_count": 36
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#print the schema for avro dataframe\r\n",
+					"df.printSchema()"
+				],
+				"attachments": null,
+				"execution_count": 37
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#extract the body and cast the dataype from bytearray to string\r\n",
+					"from pyspark.sql.functions import *\r\n",
+					"df = df.withColumn(\"Body\", col(\"Body\").cast(\"string\"))"
+				],
+				"attachments": null,
+				"execution_count": 38
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.show(2)"
+				],
+				"attachments": null,
+				"execution_count": 40
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#create a new dataframe with last value of Body column delimited by '|'\r\n",
+					"newdf=df.select(col(\"Body\"), substring_index(col(\"Body\"), \"|\", -1).alias(\"json_body\"))"
+				],
+				"attachments": null,
+				"execution_count": 41
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df_json=newdf.select(\"json_body\")"
+				],
+				"attachments": null,
+				"execution_count": 42
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df_json.printSchema()\r\n",
+					"df_json.show(2)"
+				],
+				"attachments": null,
+				"execution_count": 44
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# extract the scheama for our dataframe\r\n",
+					"account_name = \"azdwsynapse\"\r\n",
+					"container_name= \"adx\"\r\n",
+					"relative_path = \"ship.json\"\r\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name,relative_path)\r\n",
+					"print(adls_path)\r\n",
+					"dfjson=spark.read.format(\"json\").option(\"inferSchema\", \"true\").load(adls_path)\r\n",
+					"schema_json = dfjson.schema.json()\r\n",
+					"# print(schema_json)\r\n",
+					"import json\r\n",
+					"new_schema = StructType.fromJson(json.loads(schema_json))\r\n",
+					"type(new_schema)"
+				],
+				"attachments": null,
+				"execution_count": 45
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#use from_json() function which returns the Column struct with all JSON columns and explode the struct to flatten it to multiple columns.\r\n",
+					"from pyspark.sql.functions import col,from_json\r\n",
+					"dfJSON = df_json.withColumn(\"jsonData\",from_json(col(\"json_body\"),new_schema)) \\\r\n",
+					"                   .select(\"jsonData.*\")\r\n",
+					"dfJSON.show(2)"
+				],
+				"attachments": null,
+				"execution_count": 47
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df=dfJSON.withColumnRenamed(\"ns:ShpPcdDetailsMsg\", \"ShpPcdDetailsMsg\")"
+				],
+				"attachments": null,
+				"execution_count": 48
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql.functions import *\r\n",
+					"\r\n",
+					"#Flatten array of structs and structs\r\n",
+					"def flatten(df):\r\n",
+					"   # compute Complex Fields (Lists and Structs) in Schema   \r\n",
+					"   complex_fields = dict([(field.name, field.dataType)\r\n",
+					"                             for field in df.schema.fields\r\n",
+					"                             if type(field.dataType) == ArrayType or  type(field.dataType) == StructType])\r\n",
+					"   while len(complex_fields)!=0:\r\n",
+					"      col_name=list(complex_fields.keys())[0]\r\n",
+					"      print (\"Processing :\"+col_name+\" Type : \"+str(type(complex_fields[col_name])))\r\n",
+					"    \r\n",
+					"      # if StructType then convert all sub element to columns.\r\n",
+					"      # i.e. flatten structs\r\n",
+					"      if (type(complex_fields[col_name]) == StructType):\r\n",
+					"         expanded = [col(col_name+'.'+k).alias(col_name+'_'+k) for k in [ n.name for n in  complex_fields[col_name]]]\r\n",
+					"         df=df.select(\"*\", *expanded).drop(col_name)\r\n",
+					"    \r\n",
+					"      # if ArrayType then add the Array Elements as Rows using the explode function\r\n",
+					"      # i.e. explode Arrays\r\n",
+					"      elif (type(complex_fields[col_name]) == ArrayType):    \r\n",
+					"         df=df.withColumn(col_name,explode_outer(col_name))\r\n",
+					"    \r\n",
+					"      # recompute remaining Complex Fields in Schema       \r\n",
+					"      complex_fields = dict([(field.name, field.dataType)\r\n",
+					"                             for field in df.schema.fields\r\n",
+					"                             if type(field.dataType) == ArrayType or  type(field.dataType) == StructType])\r\n",
+					"   return df\r\n",
+					"\r\n",
+					"df=flatten(df)\r\n",
+					"df.printSchema()"
+				],
+				"attachments": null,
+				"execution_count": 50
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df=df.withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_ActvDtm_#text\", \"ShpPcdDetailsMsg_Bd_Shp_ActvDtm_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_Dsc_#text\", \"ShpPcdDetailsMsg_Bd_Shp_Dsc_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_GlProdSrvCd_#text\", \"ShpPcdDetailsMsg_Bd_Shp_GlProdSrvCd_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_LclProdSrvCd_#text\", \"ShpPcdDetailsMsg_Bd_Shp_LclProdSrvCd_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_PlnDtm_#text\", \"ShpPcdDetailsMsg_Bd_Shp_PlnDtm_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_Amt_Amt_#text\", \"ShpPcdDetailsMsg_Bd_Shp_Amt_Amt_text\")\\\r\n",
+					".withColumnRenamed(\"ShpPcdDetailsMsg_Bd_Shp_ShpDoc_Dtm_#text\", \"ShpPcdDetailsMsg_Bd_Shp_ShpDoc_Dtm_text\")"
+				],
+				"attachments": null,
+				"execution_count": 51
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.createOrReplaceTempView(\"shipment\")"
+				],
+				"attachments": null,
+				"execution_count": 52
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"select `ShpPcdDetailsMsg_Bd_Shp_ShpKey` from shipment \\\r\n",
+					"where `ShpPcdDetailsMsg_Bd_Shp_Cust_CustRolTyCd` = 'RV' and \\\r\n",
+					"`ShpPcdDetailsMsg_Bd_Shp_Cust_Addr_ActPntSp_CtryCd` = 'SG'\\\r\n",
+					"and `ShpPcdDetailsMsg_Bd_Shp_Cust_Addr_ActPntSp_CtryCd` in ('Q','C')\").show()"
+				],
+				"attachments": null,
+				"execution_count": 53
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"select distinct `ShpPcdDetailsMsg_Bd_Shp_Cust_CustRolTyCd` from shipment\").show()"
+				],
+				"attachments": null,
+				"execution_count": 54
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"select count(*) from shipment\").show()"
+				],
+				"attachments": null,
+				"execution_count": 55
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.write \\\r\n",
+					"    .format(\"com.microsoft.kusto.spark.synapse.datasource\") \\\r\n",
+					"    .option(\"spark.synapse.linkedService\", \"AzureDataExplorer\") \\\r\n",
+					"    .option(\"kustoDatabase\", \"adxexplorer\") \\\r\n",
+					"    .option(\"kustoTable\", \"shipspark\") \\\r\n",
+					"    .mode(\"Append\") \\\r\n",
+					"    .save()"
+				],
+				"attachments": null,
+				"execution_count": 56
+			}
+		]
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "relationship-wfzakpgmke",
+	"properties": {
+		"Name": "relationship-wfzakpgmke",
+		"EntityType": "RELATIONSHIP",
+		"Namespace": {
+			"DatabaseName": "Retail"
+		},
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"FromTableName": "address",
+		"ToTableName": "City",
+		"ColumnRelationshipInformations": [
+			{
+				"FromColumnName": "cityName",
+				"ToColumnName": "CityName"
+			}
+		],
+		"RelationshipType": 0,
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 1,
+		"ObjectId": "926b8a1f-a062-461e-b36f-249df7775ef6"
+	},
+	"type": "RELATIONSHIP"
+}

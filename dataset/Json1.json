@@ -1,0 +1,512 @@
+{
+	"name": "Json1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "ship.json",
+				"fileSystem": "adx"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"version": {
+					"type": "string"
+				},
+				"ns:ShpPcdDetailsMsg": {
+					"type": "object",
+					"properties": {
+						"Hdr": {
+							"type": "object",
+							"properties": {
+								"GI": {
+									"type": "object",
+									"properties": {
+										"TID": {
+											"type": "null"
+										}
+									}
+								},
+								"Sndr": {
+									"type": "object",
+									"properties": {
+										"AppCd": {
+											"type": "string"
+										},
+										"AppVer": {
+											"type": "string"
+										},
+										"AppNm": {
+											"type": "string"
+										},
+										"GId": {
+											"type": "object",
+											"properties": {
+												"Id": {
+													"type": "string"
+												},
+												"IdTp": {
+													"type": "string"
+												}
+											}
+										},
+										"CtryCd": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"Bd": {
+							"type": "object",
+							"properties": {
+								"Shp": {
+									"type": "object",
+									"properties": {
+										"GI": {
+											"type": "object",
+											"properties": {
+												"SrcDtm": {
+													"type": "string"
+												},
+												"SrcTmOff": {
+													"type": "string"
+												},
+												"SrcWrkStId": {
+													"type": "string"
+												},
+												"SrcAppCd": {
+													"type": "string"
+												},
+												"SrcAppInstId": {
+													"type": "string"
+												},
+												"SrcAppNm": {
+													"type": "string"
+												},
+												"SrcAppVer": {
+													"type": "string"
+												},
+												"SrcUpdDtm": {
+													"type": "string"
+												},
+												"SrcUpdTmOff": {
+													"type": "string"
+												},
+												"SrcUpdUsr": {
+													"type": "string"
+												},
+												"SrcUpdWrkStId": {
+													"type": "string"
+												},
+												"SrcUpdAppCd": {
+													"type": "string"
+												},
+												"SrcSrvaCd": {
+													"type": "string"
+												},
+												"SrcFcCd": {
+													"type": "string"
+												},
+												"SrcUpdFcCd": {
+													"type": "string"
+												},
+												"SrcUpdSrvaCd": {
+													"type": "string"
+												},
+												"BOVerNo": {
+													"type": "string"
+												},
+												"CorrId": {
+													"type": "string"
+												}
+											}
+										},
+										"ShpKey": {
+											"type": "string"
+										},
+										"PlnDtm": {
+											"type": "object",
+											"properties": {
+												"Off": {
+													"type": "string"
+												},
+												"#text": {
+													"type": "string"
+												}
+											}
+										},
+										"GlProdSrvCd": {
+											"type": "object",
+											"properties": {
+												"GlProdSrvClssCd": {
+													"type": "string"
+												},
+												"#text": {
+													"type": "string"
+												}
+											}
+										},
+										"LclProdSrvCd": {
+											"type": "object",
+											"properties": {
+												"GlProdSrvClssCd": {
+													"type": "string"
+												},
+												"#text": {
+													"type": "string"
+												}
+											}
+										},
+										"PdCntnCd": {
+											"type": "string"
+										},
+										"DclInd": {
+											"type": "string"
+										},
+										"BkgRef": {
+											"type": "null"
+										},
+										"OrgSrvACd": {
+											"type": "string"
+										},
+										"OrgFcCd": {
+											"type": "string"
+										},
+										"DstSrvACd": {
+											"type": "string"
+										},
+										"DstFcCd": {
+											"type": "string"
+										},
+										"DclNPcs": {
+											"type": "string"
+										},
+										"ActNPcs": {
+											"type": "string"
+										},
+										"DlvDtm": {
+											"type": "null"
+										},
+										"Dsc": {
+											"type": "object",
+											"properties": {
+												"Cd": {
+													"type": "string"
+												},
+												"#text": {
+													"type": "string"
+												}
+											}
+										},
+										"St": {
+											"type": "null"
+										},
+										"Cust": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"CustRolTyCd": {
+														"type": "string"
+													},
+													"NtwAccNo": {
+														"type": "string"
+													},
+													"AccTyCd": {
+														"type": "string"
+													},
+													"CommDev": {
+														"type": "object",
+														"properties": {
+															"TyCd": {
+																"type": "string"
+															},
+															"#text": {
+																"type": "string"
+															}
+														}
+													},
+													"Addr": {
+														"type": "object",
+														"properties": {
+															"UsgTyCd": {
+																"type": "string"
+															},
+															"BsnPty": {
+																"type": "object",
+																"properties": {
+																	"Indv": {
+																		"type": "object",
+																		"properties": {
+																			"Nm": {
+																				"type": "string"
+																			}
+																		}
+																	},
+																	"Orgn": {
+																		"type": "object",
+																		"properties": {
+																			"Nm": {
+																				"type": "string"
+																			}
+																		}
+																	}
+																}
+															},
+															"ActPntSp": {
+																"type": "object",
+																"properties": {
+																	"CtryCd": {
+																		"type": "string"
+																	},
+																	"RgnCd": {
+																		"type": "string"
+																	},
+																	"Lty": {
+																		"type": "object",
+																		"properties": {
+																			"CtyNm": {
+																				"type": "string"
+																			},
+																			"CtyDist": {
+																				"type": "string"
+																			},
+																			"Zip": {
+																				"type": "string"
+																			},
+																			"CtryDiv": {
+																				"type": "object",
+																				"properties": {
+																					"TyCd": {
+																						"type": "string"
+																					},
+																					"Nm": {
+																						"type": "string"
+																					}
+																				}
+																			}
+																		}
+																	},
+																	"Loc": {
+																		"type": "object",
+																		"properties": {
+																			"ThrfrNm": {
+																				"type": "string"
+																			},
+																			"BldOrCnstr": {
+																				"type": "string"
+																			}
+																		}
+																	}
+																}
+															},
+															"FrmtAddr": {
+																"type": "object",
+																"properties": {
+																	"FmtTyCd": {
+																		"type": "string"
+																	},
+																	"FmtPosId": {
+																		"type": "array",
+																		"items": {
+																			"type": "string"
+																		}
+																	},
+																	"PosCont": {
+																		"type": "array",
+																		"items": {
+																			"type": "string"
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										},
+										"ShpRef": {
+											"type": "null"
+										},
+										"ShpDoc": {
+											"type": "object",
+											"properties": {
+												"DocId": {
+													"type": "string"
+												},
+												"DocTyCd": {
+													"type": "string"
+												},
+												"Rmk": {
+													"type": "string"
+												},
+												"NoLnItm": {
+													"type": "string"
+												},
+												"Ln": {
+													"type": "object",
+													"properties": {
+														"LnNo": {
+															"type": "string"
+														},
+														"DscGds": {
+															"type": "object",
+															"properties": {
+																"LngCd": {
+																	"type": "string"
+																},
+																"#text": {
+																	"type": "string"
+																}
+															}
+														},
+														"CmdtClss": {
+															"type": "object",
+															"properties": {
+																"CtryCd": {
+																	"type": "string"
+																},
+																"Ob": {
+																	"type": "string"
+																}
+															}
+														},
+														"ManCtryCd": {
+															"type": "string"
+														},
+														"Qty": {
+															"type": "null"
+														},
+														"NetWgt": {
+															"type": "null"
+														},
+														"TotVal": {
+															"type": "object",
+															"properties": {
+																"CurCd": {
+																	"type": "string"
+																},
+																"#text": {
+																	"type": "string"
+																}
+															}
+														},
+														"ReaForTrCd": {
+															"type": "string"
+														},
+														"DatElGrp": {
+															"type": "null"
+														},
+														"Rmk": {
+															"type": "string"
+														},
+														"HrmnCmdtCd": {
+															"type": "string"
+														},
+														"PartNo": {
+															"type": "string"
+														}
+													}
+												},
+												"IncTrmCd": {
+													"type": "string"
+												},
+												"ReaForTrCd": {
+													"type": "string"
+												},
+												"Dtm": {
+													"type": "object",
+													"properties": {
+														"Off": {
+															"type": "string"
+														},
+														"#text": {
+															"type": "string"
+														}
+													}
+												},
+												"DatElGrp": {
+													"type": "null"
+												}
+											}
+										},
+										"Srv": {
+											"type": "null"
+										},
+										"Meas": {
+											"type": "null"
+										},
+										"Pcs": {
+											"type": "null"
+										},
+										"DatElGrp": {
+											"type": "object",
+											"properties": {
+												"Cd": {
+													"type": "string"
+												},
+												"DatEl": {
+													"type": "object",
+													"properties": {
+														"Cd": {
+															"type": "string"
+														},
+														"Val": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										},
+										"TrmTrdCd": {
+											"type": "string"
+										},
+										"Amt": {
+											"type": "object",
+											"properties": {
+												"TyCd": {
+													"type": "string"
+												},
+												"Amt": {
+													"type": "object",
+													"properties": {
+														"CurCd": {
+															"type": "string"
+														},
+														"#text": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										},
+										"ActvDtm": {
+											"type": "object",
+											"properties": {
+												"Off": {
+													"type": "string"
+												},
+												"#text": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

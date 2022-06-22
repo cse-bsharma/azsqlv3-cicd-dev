@@ -1,0 +1,111 @@
+{
+	"name": "Parquettest",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "stage.increment_stg.parquet",
+				"folderPath": "poc",
+				"fileSystem": "pilot"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Prscrbr_NPI",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_Last_Org_Name",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_First_Name",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_City",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_State_Abrvtn",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_State_FIPS",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_Type",
+				"type": "UTF8"
+			},
+			{
+				"name": "Prscrbr_Type_Src",
+				"type": "UTF8"
+			},
+			{
+				"name": "Brnd_Name",
+				"type": "UTF8"
+			},
+			{
+				"name": "Gnrc_Name",
+				"type": "UTF8"
+			},
+			{
+				"name": "Tot_Clms",
+				"type": "UTF8"
+			},
+			{
+				"name": "Tot_30day_Fills",
+				"type": "UTF8"
+			},
+			{
+				"name": "Tot_Day_Suply",
+				"type": "UTF8"
+			},
+			{
+				"name": "Tot_Drug_Cst",
+				"type": "UTF8"
+			},
+			{
+				"name": "Tot_Benes",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Sprsn_Flag",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Tot_Clms",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Tot_30day_Fills",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Tot_Drug_Cst",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Tot_Day_Suply",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Bene_Sprsn_Flag",
+				"type": "UTF8"
+			},
+			{
+				"name": "GE65_Tot_Benes",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

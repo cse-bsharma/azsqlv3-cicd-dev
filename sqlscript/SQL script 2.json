@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "\ndrop procedure [stg].[increment] ;\n\ndelete from dbo.details where year=2018;\nCREATE PROC [stg].[increment] @year int AS\ninsert into stg.States select * from stg.states_inc;\ninsert into stg.Specialty select * from stg.specialty_inc;\ninsert into stg.Providers select * from stg.provider_inc;\ninsert into stg.Geography select * from stg.geograpy_inc;\ninsert into stg.Drugs select * from stg.drugs_inc;\ninsert into dbo.details \nselect \nab.Tot_Benes\n,ab.Tot_Clms\n,ab.Tot_30day_Fills\n,ab.Tot_Day_Suply\n,ab.Tot_Drug_Cst\n,ab.Tot_Benes\n,ab.GE65_Bene_Sprsn_Flag\n,ab.GE65_Tot_Clms\n,ab.GE65_Sprsn_Flag\n,ab.GE65_Tot_30day_Fills\n,ab.GE65_Tot_Drug_Cst\n,ab.GE65_Tot_Day_Suply\n,ab.Year\n,ab.YearNPI\n,ab.YearGeoKey\n,ab.YearSpecialtyKey\n,ab.YearDrugKey\n,ab.CostPerDayRowLevel\nfrom (\nselect  a.*,b.YearNPI ,c.YearGeoKey,d.YearSpecialtyKey,e.YearDrugKey,\ncast(cast(a.Tot_Drug_Cst as decimal)/cast(a.Tot_Day_Suply as decimal) as int) as CostPerDayRowLevel   \nfrom  (\nselect  distinct [Prscrbr_NPI]\n,[Prscrbr_Last_Org_Name] \n,[Prscrbr_First_Name] \n,[Prscrbr_City] \n,[Prscrbr_State_Abrvtn] \n,[Prscrbr_State_FIPS]\n,[Prscrbr_Type] \n,[Prscrbr_Type_Src] \n,[Brnd_Name] \n,[Gnrc_Name] \n,[Tot_Clms] \n,[Tot_30day_Fills] \n,[Tot_Day_Suply] \n,[Tot_Drug_Cst] \n,[Tot_Benes] \n,[GE65_Sprsn_Flag] \n,[GE65_Tot_Clms] \n,[GE65_Tot_30day_Fills] \n,[GE65_Tot_Drug_Cst] \n,[GE65_Tot_Day_Suply] \n,[GE65_Bene_Sprsn_Flag] \n,[GE65_Tot_Benes]  , @year as year\nfrom stage.increment_stg )a \nleft outer join dbo.providers b\non a.Prscrbr_NPI=b.npi and a.year=b.year \nleft outer join dbo.geography c \non a.Prscrbr_City=c.city and a.Prscrbr_State_Abrvtn=c.state and a.year=c.year\nleft outer join dbo.Specialty d \non a.Prscrbr_Type_Src=d.Specialtydescriptionflag and   a.Prscrbr_Type=d.specialty and a.year=d.year\nleft outer join dbo.drugs e\non  a.Brnd_Name=e.drugname and a.Gnrc_Name=e.genericname and a.year=e.year) ab\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

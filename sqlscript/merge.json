@@ -1,0 +1,17 @@
+{
+	"name": "merge",
+	"properties": {
+		"content": {
+			"query": "IF OBJECT_ID ( 'dbo.test') IS NOT NULL\n    DROP table  dbo.test;\n\n    IF OBJECT_ID ( 'dbo.test') IS NOT NULL\n    DROP table  dbo.testmerge;\n\ncreate table test (id int , name varchar(10)) with \n( distribution=HASH(id))\n\n--create table test (id int , name varchar(10)) with ( distribution=round_robin)\n\ncreate table testmerge (id int , name varchar(10)) with \n( distribution=round_robin)\n\ninsert into test values(100,'bob')\ninsert into testmerge values(100,'scott')\n\n\nMERGE INTO test AS tgt  \nUSING testmerge src\nON tgt.id = src.id  \nWHEN MATCHED THEN  \nUPDATE SET name = src.name  \nWHEN NOT MATCHED THEN  \nINSERT(id, name) VALUES (src.id,src.name);\n\n\nUPDATE test  \nSET test.name = testmerge.name  \nfrom test\nINNER JOIN  \ntestmerge  \nON test.id =testmerge.id    \n\n\nDELETE test\nFROM    test  \n        INNER JOIN testmerge \nON test.id =testmerge.id  \n\ninsert into test select * from testmerge\n\nINSERT INTO  test (id,name)\nSELECT testmerge.id,testmerge.name\nFROM testmerge \nLEFT JOIN test\nON test.id=testmerge.id where testmerge.id is null;\n\ncreate table testupsert with (distribution=HASH(id)) \nas select * from testmerge left outer join test on testmerge.id=test.id\nwhere test.id is null union all select * from test\n\n\nselect * from test",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

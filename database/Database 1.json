@@ -1,0 +1,25 @@
+{
+	"name": "Database 1",
+	"properties": {
+		"Name": "Database 1",
+		"EntityType": "DATABASE",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Database 1",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "azsqlv3-WorkspaceDefaultStorage"
+			}
+		},
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 1,
+		"ObjectId": "92b44fd8-f66f-4501-b233-be00ee6a75d9"
+	},
+	"type": "DATABASE"
+}

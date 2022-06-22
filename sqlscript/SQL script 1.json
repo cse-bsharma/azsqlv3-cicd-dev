@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "select * from sys.dm_pdw_exec_requests where status = 'running'\n\nselect * from sys.dm_pdw_exec_requests where session_id='SID4378'\nselect * from sys.dm_pdw_exec_requests where command like '%BuildReplicatedTableCache%' order by start_time desc\nSELECT\n[Aggs].[beneficiarycount]    AS [BeneficiaryCount],\n[Aggs].[totalclaimcount]     AS [TotalClaimCount],\n[Aggs].[total30dayfillcount] AS [Total30DayFillCount],\n[Aggs].[totaldaysupply]      AS [TotalDaySupply],\n[Aggs].[totaldrugcost]       AS [TotalDrugCost],\n[Aggs].[year]                AS [Year],\n[Aggs].[statekey]            AS [StateKey],\n[Aggs].[yearspecialtykey]    AS [YearSpecialtyKey],\n[Aggs].[yeardrugkey]         AS [YearDrugKey]\nFROM   [dbo].[agg-drug-specialty-state-year] AS [Aggs]\ninner join prod.drugs [t0]\n         on Aggs.YearDrugKey=[t0].YearDrugKey\nWHERE  [t0].[year] = 2015 \nand [t0].Drugname like '%INSULIN%'; ",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

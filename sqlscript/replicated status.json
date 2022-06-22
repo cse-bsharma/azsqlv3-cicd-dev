@@ -1,0 +1,17 @@
+{
+	"name": "replicated status",
+	"properties": {
+		"content": {
+			"query": "SELECT '[' + sch.[name] + '].[' + t.[name] + '];' AS table_name, c.[state]\n\t  FROM sys.tables t  \n\t  JOIN sys.pdw_replicated_table_cache_state c  \n\t\tON c.object_id = t.object_id \n\t  JOIN sys.pdw_table_distribution_properties p \n\t\tON p.object_id = t.object_id \n\t  JOIN sys.schemas sch\n\t\tON t.schema_id = sch.schema_id\n\t WHERE p.[distribution_policy_desc] = 'REPLICATE'\n\tORDER BY c.[state], table_name\n\nselect top(10) * from [dbo].[Drugs];\nselect top(10) * from [dbo].[Specialty];\nselect top(10) * from [dbo].[States];\nselect top(10) * from [prod].[Geography];\nselect top(10) * from [prod].[Providers_replicated];\nselect top(10) * from [prod].[Specialty];\nselect top(10) * from [prod].[States];\n\n\t",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,123 @@
+{
+	"name": "eventhub_streaming",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkload",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "112g",
+			"driverCores": 16,
+			"executorMemory": "112g",
+			"executorCores": 16,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "f6055b4c-97ec-4219-9798-5fe2f3128e1d"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Synapse/workspaces/azsqlv3/bigDataPools/sparkload",
+				"name": "sparkload",
+				"type": "Spark",
+				"endpoint": "https://azsqlv3.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkload",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 16,
+				"memory": 112,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"import time\r\n",
+					"import os\r\n",
+					"import uuid\r\n",
+					"import datetime\r\n",
+					"import random\r\n",
+					"import json\r\n",
+					"from azure.eventhub import EventHubProducerClient, EventData\r\n",
+					"\r\n",
+					"# This script simulates the production of events for 10 devices.\r\n",
+					"devices = []\r\n",
+					"for x in range(0, 10):\r\n",
+					"    devices.append(str(uuid.uuid4()))"
+				],
+				"attachments": null,
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Create a producer client to produce and publish events to the event hub.\r\n",
+					"producer = EventHubProducerClient.from_connection_string(conn_str=\"EVENT HUBS NAMESAPCE CONNECTION STRING\", eventhub_name=\"EVENT HUB NAME\")"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"for y in range(0,20):    # For each device, produce 20 events. \r\n",
+					"    event_data_batch = producer.create_batch() # Create a batch. You will add events to the batch later. \r\n",
+					"    for dev in devices:\r\n",
+					"        # Create a dummy reading.\r\n",
+					"        reading = {'id': dev, 'timestamp': str(datetime.datetime.utcnow()), 'uv': random.random(), 'temperature': random.randint(70, 100), 'humidity': random.randint(70, 100)}\r\n",
+					"        s = json.dumps(reading) # Convert the reading into a JSON string.\r\n",
+					"        event_data_batch.add(EventData(s)) # Add event data to the batch.\r\n",
+					"    producer.send_batch(event_data_batch) # Send the batch of events to the event hub.\r\n",
+					"# Close the producer.    \r\n",
+					"producer.close()"
+				],
+				"attachments": null,
+				"execution_count": null
+			}
+		]
+	}
+}

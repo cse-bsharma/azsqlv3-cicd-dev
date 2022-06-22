@@ -1,0 +1,129 @@
+{
+	"name": "CensusDivision",
+	"properties": {
+		"Name": "CensusDivision",
+		"EntityType": "TABLE",
+		"TableType": "EXTERNAL",
+		"Namespace": {
+			"SchemaName": null,
+			"DatabaseName": "Retail"
+		},
+		"StorageDescriptor": {
+			"Distribution": null,
+			"Columns": [
+				{
+					"Name": "CensusDivisionId",
+					"Description": "The unique identifier of the Census Division.",
+					"OriginDataTypeName": {
+						"TypeName": "integer",
+						"IsComplexType": false,
+						"IsNullable": false,
+						"Length": 0,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "integer"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusDivision.cdm.json/CensusDivision",
+						"Name": "CensusDivisionId"
+					}
+				},
+				{
+					"Name": "CensusDivisionName",
+					"Description": "The name of the Census Division.",
+					"OriginDataTypeName": {
+						"TypeName": "string",
+						"IsComplexType": false,
+						"IsNullable": true,
+						"Length": 128,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "string"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusDivision.cdm.json/CensusDivision",
+						"Name": "CensusDivisionName"
+					}
+				},
+				{
+					"Name": "CensusRegionId",
+					"Description": "The unique identifier of the Region.",
+					"OriginDataTypeName": {
+						"TypeName": "integer",
+						"IsComplexType": false,
+						"IsNullable": true,
+						"Length": 0,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "integer"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusDivision.cdm.json/CensusDivision",
+						"Name": "CensusRegionId"
+					}
+				}
+			],
+			"ColumnSetEntityName": "5d92a02c-5fda-47c5-aa46-458b24385280",
+			"Format": {
+				"InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
+				"OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
+				"FormatType": "parquet",
+				"SerializeLib": "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe",
+				"Properties": {
+					"path": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Retail/CensusDivision",
+					"FormatTypeSetToDatabaseDefault": true
+				}
+			},
+			"Source": {
+				"Provider": "ADLS",
+				"Location": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Retail/CensusDivision",
+				"Properties": {
+					"LinkedServiceName": "azsqlv3-WorkspaceDefaultStorage",
+					"LocationSetToDatabaseDefault": true
+				}
+			},
+			"Properties": {
+				"textinputformat.record.delimiter": ",",
+				"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+				"derivedModelAttributeInfo": "{\"attributeReferences\":{\"CensusDivisionId\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusDivisionId\"},\"CensusDivisionName\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusDivisionName\"},\"CensusRegionId\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusRegionId\"}}}"
+			},
+			"Compressed": false,
+			"SerDeInfo": null,
+			"IsStoredAsSubdirectories": false
+		},
+		"Owner": null,
+		"CreateTime": 0,
+		"LastAccessTime": 0,
+		"Retention": 0,
+		"Temporary": false,
+		"IsRewriteEnabled": false,
+		"ViewOriginalText": null,
+		"ViewExpandedText": null,
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"OriginObjectId": null,
+		"IsSharedEntity": false,
+		"PublishStatus": "PUBLISHED",
+		"Properties": {
+			"DerivedModelEntityInfo": "{\"entityDirectives\":{\"baseEntityReference\":{\"name\":\"CensusDivision\",\"path\":\"CensusDivision.cdm.json/CensusDivision\"},\"description\":\"Census divisions are groupings of states and the District of Columbia that are subdivisions of the four census regions.   \\n\\nThey are intended to represent relatively homogeneous areas that are subdivisions of the four census geographic regions.  \\n\\nThere are nine census divisions, which the U.S. Census Bureau established in 1910 for the presentation of census data. \\n\\nEach census division is identified by a one-digit census code; the same number appears as the first digit in the two-digit census state code. \\n\\nPuerto Rico and the Island Areas are not part of any census region or census division. \\n\\nNORTHEAST REGION\\nNew England Division:\\n- Maine, New Hampshire, Vermont, Massachusetts, Rhode Island, Connecticut\\nMiddle Atlantic Division:\\n- New York, New Jersey, Pennsylvania\\n\\nMIDWEST REGION\\nEast North Central Division:\\n- Ohio, Indiana, Illinois, Michigan, Wisconsin\\nWest North Central Division:\\n- Minnesota, Iowa, Missouri, North Dakota, South Dakota, Nebraska, Kansas\\n\\nSOUTH REGION\\nSouth Atlantic Division:\\n- Delaware, Maryland, District of Columbia, Virginia, West Virginia, North Carolina, South Carolina, Georgia, Florida\\nEast South Central Division:\\n- Kentucky, Tennessee, Alabama, Mississippi\\nWest South Central Division:\\n- Arkansas, Louisiana, Oklahoma, Texas\\n\\nWEST REGION\\nMountain Division:\\n- Montana, Idaho, Wyoming, Colorado, New Mexico, Arizona, Utah, Nevada\\nPacific Division:\\n- Washington, Oregon, California, Alaska, Hawaii\",\"primaryKey\":[\"CensusDivisionId\"],\"projectionInfo\":{\"attributes\":[{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusDivisionId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of the Census Division.\",\"isNullable\":false,\"name\":\"CensusDivisionId\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusDivisionName\"},\"dataType\":\"string\",\"dataTypeLength\":128,\"description\":\"The name of the Census Division.\",\"isNullable\":true,\"name\":\"CensusDivisionName\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusDivision.cdm.json/CensusDivision\",\"name\":\"CensusRegionId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of the Region.\",\"isNullable\":true,\"name\":\"CensusRegionId\"}]}}}",
+			"Description": "Census divisions are groupings of states and the District of Columbia that are subdivisions of the four census regions.   \n\nThey are intended to represent relatively homogeneous areas that are subdivisions of the four census geographic regions.  \n\nThere are nine census divisions, which the U.S. Census Bureau established in 1910 for the presentation of census data. \n\nEach census division is identified by a one-digit census code; the same number appears as the first digit in the two-digit census state code. \n\nPuerto Rico and the Island Areas are not part of any census region or census division. \n\nNORTHEAST REGION\nNew England Division:\n- Maine, New Hampshire, Vermont, Massachusetts, Rhode Island, Connecticut\nMiddle Atlantic Division:\n- New York, New Jersey, Pennsylvania\n\nMIDWEST REGION\nEast North Central Division:\n- Ohio, Indiana, Illinois, Michigan, Wisconsin\nWest North Central Division:\n- Minnesota, Iowa, Missouri, North Dakota, South Dakota, Nebraska, Kansas\n\nSOUTH REGION\nSouth Atlantic Division:\n- Delaware, Maryland, District of Columbia, Virginia, West Virginia, North Carolina, South Carolina, Georgia, Florida\nEast South Central Division:\n- Kentucky, Tennessee, Alabama, Mississippi\nWest South Central Division:\n- Arkansas, Louisiana, Oklahoma, Texas\n\nWEST REGION\nMountain Division:\n- Montana, Idaho, Wyoming, Colorado, New Mexico, Arizona, Utah, Nevada\nPacific Division:\n- Washington, Oregon, California, Alaska, Hawaii",
+			"DisplayFolderInfo": "{\"name\":\"Geography\",\"colorCode\":\"#8170C2\"}",
+			"PrimaryKeys": "CensusDivisionId",
+			"spark.sql.sources.provider": "parquet",
+			"x-ms-usageinfo": "AzureSynapseDatabaseTemplate",
+			"spark.sql.sources.schema.numParts": "1",
+			"spark.sql.sources.schema.part.0": "{\"type\":\"struct\",\"fields\":[{\"name\":\"CensusDivisionId\",\"type\":\"integer\",\"nullable\":false,\"metadata\":{}},{\"name\":\"CensusDivisionName\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"CensusRegionId\",\"type\":\"integer\",\"nullable\":true,\"metadata\":{}}]}"
+		},
+		"ObjectVersion": 1,
+		"ObjectId": "4ba51ad5-554d-422a-a63c-9075a583cea9",
+		"Description": "Census divisions are groupings of states and the District of Columbia that are subdivisions of the four census regions.   \n\nThey are intended to represent relatively homogeneous areas that are subdivisions of the four census geographic regions.  \n\nThere are nine census divisions, which the U.S. Census Bureau established in 1910 for the presentation of census data. \n\nEach census division is identified by a one-digit census code; the same number appears as the first digit in the two-digit census state code. \n\nPuerto Rico and the Island Areas are not part of any census region or census division. \n\nNORTHEAST REGION\nNew England Division:\n- Maine, New Hampshire, Vermont, Massachusetts, Rhode Island, Connecticut\nMiddle Atlantic Division:\n- New York, New Jersey, Pennsylvania\n\nMIDWEST REGION\nEast North Central Division:\n- Ohio, Indiana, Illinois, Michigan, Wisconsin\nWest North Central Division:\n- Minnesota, Iowa, Missouri, North Dakota, South Dakota, Nebraska, Kansas\n\nSOUTH REGION\nSouth Atlantic Division:\n- Delaware, Maryland, District of Columbia, Virginia, West Virginia, North Carolina, South Carolina, Georgia, Florida\nEast South Central Division:\n- Kentucky, Tennessee, Alabama, Mississippi\nWest South Central Division:\n- Arkansas, Louisiana, Oklahoma, Texas\n\nWEST REGION\nMountain Division:\n- Montana, Idaho, Wyoming, Colorado, New Mexico, Arizona, Utah, Nevada\nPacific Division:\n- Washington, Oregon, California, Alaska, Hawaii"
+	},
+	"type": "TABLE"
+}

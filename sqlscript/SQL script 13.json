@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 13",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE mask (\n  FirstName varchar(100) MASKED WITH (FUNCTION = 'partial(1, \"xxxxx\", 1)') NULL,\n  LastName varchar(100) NOT NULL,\n  Phone varchar(12) MASKED WITH (FUNCTION = 'default()') NULL\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
