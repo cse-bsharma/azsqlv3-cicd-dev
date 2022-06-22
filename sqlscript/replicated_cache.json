@@ -1,0 +1,17 @@
+{
+	"name": "replicated_cache",
+	"properties": {
+		"content": {
+			"query": "SELECT '[' + sch.[name] + '].[' + t.[name] + '];' AS table_name, c.[state]\n\t  FROM sys.tables t  \n\t  JOIN sys.pdw_replicated_table_cache_state c  \n\t\tON c.object_id = t.object_id \n\t  JOIN sys.pdw_table_distribution_properties p \n\t\tON p.object_id = t.object_id \n\t  JOIN sys.schemas sch\n\t\tON t.schema_id = sch.schema_id\n\t WHERE p.[distribution_policy_desc] = 'REPLICATE'\n\tORDER BY c.[state], table_name\n\t\ndrop table prod.drugs\ncreate table prod.drugs with (\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n) as select * from dbo.drugs\n\n\nSELECT\n[Aggs].[beneficiarycount]    AS [BeneficiaryCount],\n[Aggs].[totalclaimcount]     AS [TotalClaimCount],\n[Aggs].[total30dayfillcount] AS [Total30DayFillCount],\n[Aggs].[totaldaysupply]      AS [TotalDaySupply],\n[Aggs].[totaldrugcost]       AS [TotalDrugCost],\n[Aggs].[year]                AS [Year],\n[Aggs].[statekey]            AS [StateKey],\n[Aggs].[yearspecialtykey]    AS [YearSpecialtyKey],\n[Aggs].[yeardrugkey]         AS [YearDrugKey]\nFROM   [dbo].[agg-drug-specialty-state-year] AS [Aggs]\ninner join prod.drugs [t0]\n         on Aggs.YearDrugKey=[t0].YearDrugKey\nWHERE  [t0].[year] = 2015 \nand [t0].Drugname like '%INSULIN%'; \n\n--QID43873\n--QID43869\n--6 seconds\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

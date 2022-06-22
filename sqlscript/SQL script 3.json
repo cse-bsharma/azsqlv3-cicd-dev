@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "drop EXTERNAL DATA SOURCE AzureStorageDSN ;\ndrop DATABASE SCOPED CREDENTIAL AzureStorageCredential;\ndrop external table prod.test_new;\ndrop external table prod.test;\nCREATE DATABASE SCOPED CREDENTIAL AzureStorageCredential\nWITH\n  IDENTITY = 'azdwsynapse',\n  SECRET = 'j7F0EDY0K9YGTVuPUnb8U3aRw+EX/cClWfL/GhGdmc59sLFm9cwOjfA1xDP7yvHI/zIUXNAPUaGCPWPrNm9iKw==' ;\n\n\n\n CREATE EXTERNAL DATA SOURCE AzureStorageDSN  \n    WITH (   \n      TYPE= HADOOP,\n        LOCATION = 'wasbs://pilot@azdwsynapse.blob.core.windows.net/'\n        , CREDENTIAL = AzureStorageCredential\n    ) \n\nCREATE EXTERNAL FILE FORMAT parquetfileformat\nWITH (  \n    FORMAT_TYPE = PARQUET,  \n    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'  \n);  \n\n\nCREATE EXTERNAL TABLE prod.test\n(\n\t[Prscrbr_NPI] [varchar](200)  NULL,\n\t[Prscrbr_Last_Org_Name] [varchar](200)  NULL,\n\t[Prscrbr_First_Name] [varchar](200)  NULL,\n\t[Prscrbr_City] [varchar](200)  NULL,\n\t[Prscrbr_State_Abrvtn] [varchar](200)  NULL,\n\t[Prscrbr_State_FIPS] [varchar](200)  NULL,\n\t[Prscrbr_Type] [varchar](200)  NULL,\n\t[Prscrbr_Type_Src] [varchar](200)  NULL,\n\t[Brnd_Name] [varchar](200)  NULL,\n\t[Gnrc_Name] [varchar](200)  NULL,\n\t[Tot_Clms] [varchar](200)  NULL,\n\t[Tot_30day_Fills] [varchar](200)  NULL,\n\t[Tot_Day_Suply] [varchar](200)  NULL,\n\t[Tot_Drug_Cst] [varchar](200)  NULL,\n\t[Tot_Benes] [varchar](200)  NULL,\n\t[GE65_Sprsn_Flag] [varchar](200)  NULL,\n\t[GE65_Tot_Clms] [varchar](200)  NULL,\n\t[GE65_Tot_30day_Fills] [varchar](200)  NULL,\n\t[GE65_Tot_Drug_Cst] [varchar](200)  NULL,\n\t[GE65_Tot_Day_Suply] [varchar](200)  NULL,\n\t[GE65_Bene_Sprsn_Flag] [varchar](200)  NULL,\n\t[GE65_Tot_Benes] [varchar](200)  NULL\n)  \nWITH (\n    LOCATION = 'stage.increment_stg.parquet',\n    DATA_SOURCE = AzureStorageDSN,  \n    FILE_FORMAT = parquetfileformat\n)\nGO\n\nselect top(1) * from prod.test;\n\nCREATE EXTERNAL TABLE prod.test_new\n\nWITH (\n    LOCATION = '*',\n    DATA_SOURCE = AzureStorageDSN,  \n    FILE_FORMAT = parquetfileformat\n)\nas select * from stage.increment_stg where 1=2\nGO\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

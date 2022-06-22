@@ -1,0 +1,329 @@
+{
+	"name": "increment_spark",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "largepool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 18,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "18"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Synapse/workspaces/azsqlv3/bigDataPools/largepool",
+				"name": "largepool",
+				"type": "Spark",
+				"endpoint": "https://azsqlv3.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/largepool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql import SparkSession\r\n",
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql import Row\r\n",
+					"from pyspark.sql.types import StructField, StructType, StringType, LongType"
+				],
+				"attachments": null,
+				"execution_count": 14
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"account_name_inc = \"azdwsynapse\"\r\n",
+					"container_name_inc= \"pilot\"\r\n",
+					"relative_path_inc = \"poc/*parquet\"\r\n",
+					"adls_path_inc = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name_inc, account_name_inc, relative_path_inc)"
+				],
+				"attachments": null,
+				"execution_count": 15
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"account_name = \"azdwsynapse\"\r\n",
+					"container_name= \"pilot\"\r\n",
+					"relative_path = \"historydata\"\r\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)"
+				],
+				"attachments": null,
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"year=2018"
+				],
+				"attachments": null,
+				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def read_df(tabname):\r\n",
+					"    tabinc=tabname+\"_inc\"\r\n",
+					"    df_inc=spark.read.format(\"parquet\").load(adls_path_inc)\r\n",
+					"    df_inc.createOrReplaceTempView(tabinc)\r\n",
+					"    df=spark.read.format(\"parquet\").load(adls_path +\"/\"+tabname)\r\n",
+					"    df.createOrReplaceTempView(tabname)"
+				],
+				"attachments": null,
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"tabname=\"States\"\r\n",
+					"tabinc=tabname+\"_inc\"\r\n",
+					"read_df(tabname)\r\n",
+					"maxskstate=spark.sql(\"select max(StateKey) from States\").collect()[0][0]\r\n",
+					"df_state=spark.sql(\"select Prscrbr_State_Abrvtn as State ,RowNumber + {} as StateKey from \\\r\n",
+					"(select a.Prscrbr_State_Abrvtn ,ROW_NUMBER() OVER(ORDER BY a.Prscrbr_State_Abrvtn) \\\r\n",
+					"RowNumber from (select distinct Prscrbr_State_Abrvtn from {})a \\\r\n",
+					"left outer join {} b  \\\r\n",
+					"on a.Prscrbr_State_Abrvtn = b.state \\\r\n",
+					"where b.state is null)\".format(maxskstate,tabinc,tabname))\r\n",
+					"df_state.createOrReplaceTempView(tabname+\"_increment\")"
+				],
+				"attachments": null,
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"tabname=\"Specialty\"\r\n",
+					"tabinc=tabname+\"_inc\"\r\n",
+					"read_df(tabname)\r\n",
+					"maxskpecialty=spark.sql(\"select max(yearspecialtykey) from Specialty\").collect()[0][0]\r\n",
+					"df_specialty=spark.sql(\"select ac.Prscrbr_Type_Src, ac.year,ac.RowNumber + {} as YearSpecialtyKey, ac.Prscrbr_Type from \\\r\n",
+					"(select ab.Prscrbr_Type,ab.Prscrbr_Type_Src,{} as year, \\\r\n",
+					"ROW_NUMBER() OVER(ORDER BY ab.Prscrbr_Type,ab.Prscrbr_Type_Src) RowNumber \\\r\n",
+					"from (select distinct Prscrbr_Type,Prscrbr_Type_Src from {} ) ab )ac\".format(maxskpecialty,year,tabinc))\r\n",
+					"df_specialty.createOrReplaceTempView(tabname+\"_increment\")"
+				],
+				"attachments": null,
+				"execution_count": 20
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"tabname=\"Providers\"\r\n",
+					"tabinc=tabname+\"_inc\"\r\n",
+					"read_df(tabname)\r\n",
+					"maxskproviders=spark.sql(\"select max(yearNpi) from Providers\").collect()[0][0]\r\n",
+					"df_providers=spark.sql(\" select ab.Prscrbr_NPI,ab.Prscrbr_Last_Org_Name,ab.Prscrbr_First_Name,ab.fullname \\\r\n",
+					",ab.year,ab.RowNumber + {} as YearNPI from ( \\\r\n",
+					"select a.Prscrbr_NPI,a.Prscrbr_Last_Org_Name,a.Prscrbr_First_Name, \\\r\n",
+					"concat(a.Prscrbr_Last_Org_Name,', ',a.Prscrbr_First_Name) as fullname, a.year, \\\r\n",
+					"ROW_NUMBER() OVER(ORDER BY a.Prscrbr_NPI) RowNumber from  \\\r\n",
+					"(select distinct Prscrbr_NPI,Prscrbr_First_Name,Prscrbr_Last_Org_Name,{} as year from {})a )ab\".format(maxskproviders,year,tabinc))\r\n",
+					"df_providers.createOrReplaceTempView(tabname+\"_increment\")"
+				],
+				"attachments": null,
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"tabname=\"Geography\"\r\n",
+					"tabinc=tabname+\"_inc\"\r\n",
+					"read_df(tabname)\r\n",
+					"maxskgeography=spark.sql(\"select max(yeargeokey) from Geography\").collect()[0][0]\r\n",
+					"df_geography=spark.sql(\"select ac.Prscrbr_City,ac.Prscrbr_State_Abrvtn,ac.year,ac.RowNumber + {} as YearGeoKey, \\\r\n",
+					"ac.citystate,ac.statekey from ( \\\r\n",
+					"select  ab.Prscrbr_City,ab.Prscrbr_State_Abrvtn,ab.year, \\\r\n",
+					"ROW_NUMBER() OVER(ORDER BY ab.Prscrbr_City,ab.Prscrbr_State_Abrvtn) RowNumber ,ab.citystate,ab.statekey \\\r\n",
+					"from ( \\\r\n",
+					"select a.Prscrbr_City,a.Prscrbr_State_Abrvtn,a.year,concat(a.Prscrbr_City,', ',a.Prscrbr_State_Abrvtn) as citystate \\\r\n",
+					",b.statekey from (select distinct Prscrbr_City,Prscrbr_State_Abrvtn, {} as year from {})a  \\\r\n",
+					"inner join {} b on a.Prscrbr_State_Abrvtn=b.state)ab) ac\".format(maxskgeography,year,tabinc,\"States\"))\r\n",
+					"df_geography.createOrReplaceTempView(tabname+\"_increment\")"
+				],
+				"attachments": null,
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"tabname=\"Drugs\"\r\n",
+					"tabinc=tabname+\"_inc\"\r\n",
+					"read_df(tabname)\r\n",
+					"maxskdrugs=spark.sql(\"select max(yeardrugkey) from Drugs\").collect()[0][0]\r\n",
+					"df_drugs=spark.sql(\"select ab.Brnd_Name,ab.Gnrc_Name,ab.year,ab.RowNumber + {} as YearDrugKey from ( \\\r\n",
+					"select a.Brnd_Name,a.Gnrc_Name,a.year, ROW_NUMBER() OVER(ORDER BY a.Brnd_Name,a.Gnrc_Name) RowNumber from \\\r\n",
+					"(select distinct Brnd_Name,Gnrc_Name,{} as year from {})a)ab\".format(maxskdrugs,year,tabinc))\r\n",
+					"df_drugs.createOrReplaceTempView(tabname+\"_increment\")"
+				],
+				"attachments": null,
+				"execution_count": 23
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"import com.microsoft.spark.sqlanalytics.utils.Constants\r\n",
+					"import org.apache.spark.sql.SqlAnalyticsConnector._\r\n",
+					"val states_inc = spark.sqlContext.sql (\"select * from States_increment\")\r\n",
+					"val specialty_inc = spark.sqlContext.sql (\"select * from Specialty_increment\")\r\n",
+					"val provider_inc = spark.sqlContext.sql (\"select * from Providers_increment\")\r\n",
+					"val geograpy_inc = spark.sqlContext.sql (\"select * from Geography_increment\")\r\n",
+					"val drugs_inc = spark.sqlContext.sql (\"select * from Drugs_increment\")\r\n",
+					"states_inc.write.synapsesql(\"azsqldw.stg.states_inc\", Constants.INTERNAL)\r\n",
+					"specialty_inc.write.synapsesql(\"azsqldw.stg.specialty_inc\", Constants.INTERNAL)\r\n",
+					"provider_inc.write.synapsesql(\"azsqldw.stg.provider_inc\", Constants.INTERNAL)\r\n",
+					"geograpy_inc.write.synapsesql(\"azsqldw.stg.geograpy_inc\", Constants.INTERNAL)\r\n",
+					"drugs_inc.write.synapsesql(\"azsqldw.stg.drugs_inc\", Constants.INTERNAL)"
+				],
+				"attachments": null,
+				"execution_count": 24
+			}
+		]
+	}
+}

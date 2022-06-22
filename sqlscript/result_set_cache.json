@@ -1,0 +1,17 @@
+{
+	"name": "result_set_cache",
+	"properties": {
+		"content": {
+			"query": "--Master\nALTER DATABASE azsqldw\nSET RESULT_SET_CACHING OFF;\n\nSELECT name, is_result_set_caching_on\nFROM sys.databases;\n\nselect [details].[YearSpecialtyKey] as [YearSpecialtyKey],[details].[YearDrugKey] as [YearDrugKey],[details].[Year] as [Year], sum([details].[BeneficiaryCount]) as [BeneficiaryCount],\nsum([details].[TotalClaimCount]) as [TotalClaimCount], sum([details].[Total30DayFillCount]) as [Total30DayFillCount], sum([details].[TotalDaySupply]) as [TotalDaySupply],\nsum([details].[TotalDrugCost]) as [TotalDrugCost]  from   (select [BeneficiaryCount], [TotalClaimCount], [Total30DayFillCount], [TotalDaySupply], [TotalDrugCost],  [Year], [YearSpecialtyKey], \n[YearDrugKey]  from [dbo].[Details] ) as [details] WHERE [Year] = 2013 AND BeneficiaryCount is NOT NULL group by [YearSpecialtyKey], [YearDrugKey], [Year]\noption(label='result_set_cache_1')\n\nselect * from sys.dm_pdw_exec_requests where [label] like  '%result_set_cache_1%'\n\n--Master\nALTER DATABASE azsqldw\nSET RESULT_SET_CACHING ON;\n\nSELECT name, is_result_set_caching_on\nFROM sys.databases;\n\nselect [details].[YearSpecialtyKey] as [YearSpecialtyKey],[details].[YearDrugKey] as [YearDrugKey],[details].[Year] as [Year], sum([details].[BeneficiaryCount]) as [BeneficiaryCount],\nsum([details].[TotalClaimCount]) as [TotalClaimCount], sum([details].[Total30DayFillCount]) as [Total30DayFillCount], sum([details].[TotalDaySupply]) as [TotalDaySupply],\nsum([details].[TotalDrugCost]) as [TotalDrugCost]  from   (select [BeneficiaryCount], [TotalClaimCount], [Total30DayFillCount], [TotalDaySupply], [TotalDrugCost],  [Year], [YearSpecialtyKey], \n[YearDrugKey]  from [dbo].[Details] ) as [details] WHERE [Year] = 2013 AND BeneficiaryCount is NOT NULL group by [YearSpecialtyKey], [YearDrugKey], [Year]\noption(label='result_set_cache_2')\n\nselect * from sys.dm_pdw_exec_requests where [label] like  '%result_set_cache_2%' order by result_cache_hit\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

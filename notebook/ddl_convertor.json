@@ -1,0 +1,172 @@
+{
+	"name": "ddl_convertor",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "azsparkpool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Synapse/workspaces/azsqlv3/bigDataPools/azsparkpool",
+				"name": "azsparkpool",
+				"type": "Spark",
+				"endpoint": "https://azsqlv3.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/azsparkpool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"tabdf = spark.read.format(\"jdbc\") \\\r\n",
+					"    .option(\"url\", f\"jdbc:sqlserver://13.84.151.236:1433;databaseName=MedicareAnalysisDM\") \\\r\n",
+					"    .option(\"dbtable\", \"INFORMATION_SCHEMA.COLUMNS\") \\\r\n",
+					"    .option(\"user\", \"apsadmin\") \\\r\n",
+					"    .option(\"password\", \"P@ssword1234\") \\\r\n",
+					"    .option(\"driver\", \"com.microsoft.sqlserver.jdbc.SQLServerDriver\") \\\r\n",
+					"    .load()"
+				],
+				"attachments": null,
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"tabdf.createOrReplaceTempView('tabinfo')"
+				],
+				"attachments": null,
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"tablst=tabdf.select(\"TABLE_NAME\").distinct().filter(tabdf[\"TABLE_NAME\"] != \"Agg-Drug-Specialty-State-Year\").collect()\r\n",
+					""
+				],
+				"attachments": null,
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"spark.conf.set(\"spark.sql.execution.arrow.pyspark.enabled\", \"true\")"
+				],
+				"attachments": null,
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"for row in tablst:\r\n",
+					"    tab=str(row[\"TABLE_NAME\"])\r\n",
+					"    print(\"CREATE TABLE \"+row[\"TABLE_NAME\"]+ ' (')\r\n",
+					"    print(spark.sql(\"\"\"SELECT  COLUMN_NAME,\r\n",
+					"case \r\n",
+					"when DATA_TYPE in ('varchar','char') then concat(DATA_TYPE,'(',CHARACTER_MAXIMUM_LENGTH,')')\r\n",
+					"else DATA_TYPE END AS DATATYPE , \r\n",
+					"case \r\n",
+					"when IS_NULLABLE = 'YES' then 'NULL'\r\n",
+					"    else 'NOT NULL' end as NULLVALUE , ','\r\n",
+					"FROM tabinfo where table_name={} order by TABLE_NAME,ORDINAL_POSITION asc;\"\"\".format(\"'\"+tab+\"'\")).toPandas().to_string(header=False,index=False).rstrip(','))\r\n",
+					"    print(\") with (distribution=ROUND_ROBIN,HEAP );\")"
+				],
+				"attachments": null,
+				"execution_count": 5
+			}
+		]
+	}
+}

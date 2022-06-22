@@ -1,0 +1,312 @@
+{
+	"name": "History_Load",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "largepool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 18,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "18"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Synapse/workspaces/azsqlv3/bigDataPools/largepool",
+				"name": "largepool",
+				"type": "Spark",
+				"endpoint": "https://azsqlv3.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/largepool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql import SparkSession\r\n",
+					"from pyspark.sql.types import *\r\n",
+					"from pyspark.sql import Row\r\n",
+					"from pyspark.sql.types import StructField, StructType, StringType, LongType"
+				],
+				"attachments": null,
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"account_name = \"azdwsynapse\"\r\n",
+					"container_name= \"pilot\"\r\n",
+					"relative_path = \"historydata\"\r\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)"
+				],
+				"attachments": null,
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"tabname=\"\"\r\n",
+					"password=\"\""
+				],
+				"attachments": null,
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def extract(table_name):\r\n",
+					"    if table_name=='Details':\r\n",
+					"          data = spark.read.format(\"jdbc\") \\\r\n",
+					"            .option(\"url\", f\"jdbc:sqlserver://13.84.151.236:1433;databaseName=MedicareAnalysisDM\") \\\r\n",
+					"            .option(\"dbtable\", table_name) \\\r\n",
+					"            .option(\"user\", \"apsadmin\") \\\r\n",
+					"            .option(\"password\", password) \\\r\n",
+					"            .option(\"partitionColumn\", \"Year\")\\\r\n",
+					"            .option(\"lowerBound\", 2013)\\\r\n",
+					"            .option(\"upperBound\", 2017)\\\r\n",
+					"            .option(\"numPartitions\", 4)\\\r\n",
+					"            .option(\"driver\", \"com.microsoft.sqlserver.jdbc.SQLServerDriver\") \\\r\n",
+					"            .load()\r\n",
+					"    else:\r\n",
+					"        data = spark.read.format(\"jdbc\") \\\r\n",
+					"        .option(\"url\", f\"jdbc:sqlserver://13.84.151.236:1433;databaseName=MedicareAnalysisDM\") \\\r\n",
+					"        .option(\"dbtable\", table_name) \\\r\n",
+					"        .option(\"user\", \"apsadmin\") \\\r\n",
+					"        .option(\"password\", password) \\\r\n",
+					"        .option(\"driver\", \"com.microsoft.sqlserver.jdbc.SQLServerDriver\") \\\r\n",
+					"        .load()\r\n",
+					"    return data"
+				],
+				"attachments": null,
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# def extract(table_name):\r\n",
+					"#         data = spark.read.format(\"jdbc\") \\\r\n",
+					"#         .option(\"url\", f\"jdbc:sqlserver://13.84.151.236:1433;databaseName=MedicareAnalysisDM\") \\\r\n",
+					"#         .option(\"dbtable\", table_name) \\\r\n",
+					"#         .option(\"user\", \"apsadmin\") \\\r\n",
+					"#         .option(\"password\", password) \\\r\n",
+					"#         .option(\"driver\", \"com.microsoft.sqlserver.jdbc.SQLServerDriver\") \\\r\n",
+					"#         .load()\r\n",
+					"#         return data"
+				],
+				"attachments": null,
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"myManualSchema = StructType([\r\n",
+					"StructField(\"table_name\", StringType(), True)\r\n",
+					"])\r\n",
+					"myRow = Row(tabname)\r\n",
+					"scala_list = spark.createDataFrame([myRow], myManualSchema)\r\n",
+					"scala_list.createOrReplaceTempView('tabinfo')"
+				],
+				"attachments": null,
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": []
+				},
+				"source": [
+					"tabdata=extract(tabname)\r\n",
+					"tabdata.write.format(\"parquet\").mode(\"overwrite\")\\\r\n",
+					".option(\"compression\",\"snappy\")\\\r\n",
+					".option(\"maxRecordsPerFile\",2000000)\\\r\n",
+					".save(adls_path +\"/\"+tabname)"
+				],
+				"attachments": null,
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# tabdata=extract(tabname)\r\n",
+					"# tabdata.write.format(\"csv\").mode(\"overwrite\")\\\r\n",
+					"# .option(\"compression\",\"gzip\")\\\r\n",
+					"# .option(\"maxRecordsPerFile\",2000000)\\\r\n",
+					"# .save(adls_path +\"/\"+tabname)\r\n",
+					""
+				],
+				"attachments": null,
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df=spark.read.format(\"parquet\")\\\r\n",
+					".load(adls_path +\"/\"+tabname)\r\n",
+					"df.createOrReplaceTempView(tabname)"
+				],
+				"attachments": null,
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"import com.microsoft.spark.sqlanalytics.utils.Constants\r\n",
+					"import org.apache.spark.sql.SqlAnalyticsConnector._\r\n",
+					"val scala_df = spark.sqlContext.sql (\"select * from tabinfo\")\r\n",
+					"val names = scala_df.select(\"table_name\").collect()\r\n",
+					"val name = names.map(x => x.get(0)).mkString(\",\")\r\n",
+					"var sqltext=(\"select * from \" + name)\r\n",
+					"val df = spark.sqlContext.sql (sqltext)\r\n",
+					"df.write.synapsesql(\"azsqldw.stg.\"+name, Constants.INTERNAL)"
+				],
+				"attachments": null,
+				"execution_count": 10
+			}
+		]
+	}
+}

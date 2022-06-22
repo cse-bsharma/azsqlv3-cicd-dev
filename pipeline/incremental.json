@@ -1,0 +1,361 @@
+{
+	"name": "incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "copy_2018",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Prscrbr_NPI",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_NPI",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_Last_Org_Name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_Last_Org_Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_First_Name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_First_Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_City",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_City",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_State_Abrvtn",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_State_Abrvtn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_State_FIPS",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_State_FIPS",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_Type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_Type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Prscrbr_Type_Src",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Prscrbr_Type_Src",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Brnd_Name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Brnd_Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Gnrc_Name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Gnrc_Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_Clms",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tot_Clms",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_30day_Fills",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tot_30day_Fills",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_Day_Suply",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tot_Day_Suply",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_Drug_Cst",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tot_Drug_Cst",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tot_Benes",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Tot_Benes",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Sprsn_Flag",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Sprsn_Flag",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Tot_Clms",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Tot_Clms",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Tot_30day_Fills",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Tot_30day_Fills",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Tot_Drug_Cst",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Tot_Drug_Cst",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Tot_Day_Suply",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Tot_Day_Suply",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Bene_Sprsn_Flag",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Bene_Sprsn_Flag",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "GE65_Tot_Benes\r",
+									"type": "String"
+								},
+								"sink": {
+									"name": "GE65_Tot_Benes",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "2018_load",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable1",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "lookup_sp",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "copy_2018",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlDWSource",
+						"sqlReaderQuery": "select sp_name from icremental_load order by id asc;",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticssplookup",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "incremental_load",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lookup_sp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lookup_sp').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "sp_increment",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": {
+									"value": "@item().sp_name",
+									"type": "Expression"
+								},
+								"storedProcedureParameters": {
+									"year": {
+										"value": "2018"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSynapseAnalytics1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-09-07T05:59:52Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

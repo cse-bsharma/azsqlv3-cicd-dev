@@ -1,0 +1,49 @@
+{
+	"name": "AzureDataExplorer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [
+			{
+				"name": "intErrorId",
+				"type": "long"
+			},
+			{
+				"name": "txtServiceURL",
+				"type": "string"
+			},
+			{
+				"name": "txtApplication",
+				"type": "string"
+			},
+			{
+				"name": "txtModule",
+				"type": "string"
+			},
+			{
+				"name": "txtFeature",
+				"type": "string"
+			},
+			{
+				"name": "txtServiceType",
+				"type": "string"
+			},
+			{
+				"name": "txtModifiedBy",
+				"type": "string"
+			},
+			{
+				"name": "dtload",
+				"type": "string"
+			}
+		],
+		"typeProperties": {
+			"table": "BIPDWStgInfyMeServiceErrorsMapp"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

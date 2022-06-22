@@ -1,0 +1,29 @@
+{
+	"name": "relationship-yzobjdivez",
+	"properties": {
+		"Name": "relationship-yzobjdivez",
+		"EntityType": "RELATIONSHIP",
+		"Namespace": {
+			"DatabaseName": "Retail"
+		},
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"FromTableName": "CensusRegion",
+		"ToTableName": "CensusDivision",
+		"ColumnRelationshipInformations": [
+			{
+				"FromColumnName": "CensusRegionId",
+				"ToColumnName": "CensusRegionId"
+			}
+		],
+		"RelationshipType": 0,
+		"Properties": {
+			"DerivedModelRelationshipInfo": "{\"baseRelationship\":{\"fromEntity\":\"CensusRegion.cdm.json/CensusRegion\",\"toEntity\":\"CensusDivision.cdm.json/CensusDivision\",\"joinPairs\":[{\"fromAttribute\":\"CensusRegionId\",\"toAttribute\":\"CensusRegionId\"}]}}"
+		},
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 1,
+		"ObjectId": "052ffabb-4021-4bb4-b07d-2b1ecc665f56"
+	},
+	"type": "RELATIONSHIP"
+}

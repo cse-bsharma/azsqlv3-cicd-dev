@@ -1,0 +1,25 @@
+{
+	"name": "cdm",
+	"properties": {
+		"Name": "cdm",
+		"EntityType": "DATABASE",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/cdm",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "azsqlv3-WorkspaceDefaultStorage"
+			}
+		},
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 1,
+		"ObjectId": "4ba92d5c-2f63-478d-8c08-b2049f183299"
+	},
+	"type": "DATABASE"
+}

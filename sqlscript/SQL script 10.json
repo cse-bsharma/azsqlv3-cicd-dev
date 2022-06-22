@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 10",
+	"properties": {
+		"content": {
+			"query": "CREATE DATABASE SCOPED CREDENTIAL MICRED with IDENTITY='Managed Identity';\n\nDROP EXTERNAL DATA SOURCE externalstrg \n\nCREATE EXTERNAL DATA SOURCE externalstrg\nWITH\n  ( LOCATION = 'abfss://history@azlandingpilot.dfs.core.windows.net'\n    , CREDENTIAL = [MICRED])\n; \n\ndrop EXTERNAL FILE FORMAT delimited;\nCREATE EXTERNAL FILE FORMAT delimited  \nWITH (  \n    FORMAT_TYPE = DELIMITEDTEXT,  \n    FORMAT_OPTIONS (  \n        FIELD_TERMINATOR = ',',  \n        FIRST_ROW = 2\n));  \n\nDROP  EXTERNAL TABLE employee;\n\nCREATE EXTERNAL TABLE employee\n    ( fistname varchar(20),\n    empkey int)  \n    WITH (\n        LOCATION = 'emp/',  \n        DATA_SOURCE = externalstrg,  \n        FILE_FORMAT = delimited  \n        )  ;\n\nselect * from employee;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"name": "SqlServerpilot",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServersource",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sourcetable": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().sourcetable",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

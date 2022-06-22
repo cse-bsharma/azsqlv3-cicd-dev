@@ -1,0 +1,17 @@
+{
+	"name": "sqlbits demo",
+	"properties": {
+		"content": {
+			"query": "--Master\nALTER DATABASE azsqldw\nSET RESULT_SET_CACHING OFF;\n\nSELECT name, is_result_set_caching_on\nFROM sys.databases;\n\n--Running a query over heap table \nselect top (5) sum(cast(BeneficiaryCount as bigint)),a.year,d.state\nfrom prod.Details a inner join prod.providers_heap b on \na.YearNPI=b.YearNPI inner join prod.drugs_heap c on a.YearDrugKey=c.YearDrugKey\ninner join prod.Geography_heap d on  a.YearGeoKey=d.YearGeoKey  group by a.year,d.state order by a.year desc\nOPTION (LABEL = 'rep')\n\n--Query steps\nselect * from sys.dm_pdw_exec_requests where [label]='rep'\nand session_id <> session_id();\nselect * from sys.dm_pdw_request_steps where request_id='QID209948';\n\n\n--Running same query over replicated table \nselect top (5) sum(cast(BeneficiaryCount as bigint)),a.year,d.state\nfrom prod.Details a inner join prod.providers_replicated b on \na.YearNPI=b.YearNPI inner join dbo.drugs c on a.YearDrugKey=c.YearDrugKey\ninner join prod.Geography d on  a.YearGeoKey=d.YearGeoKey  group by a.year,d.state order by a.year desc\nOPTION (LABEL = 'rep_new')\n\n\n--Query steps\nselect request_id from sys.dm_pdw_exec_requests where [label]='rep_new'\nand session_id <> session_id();\nselect * from sys.dm_pdw_request_steps where request_id='QID209978';\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

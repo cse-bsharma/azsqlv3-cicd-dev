@@ -1,0 +1,129 @@
+{
+	"name": "CensusRegion",
+	"properties": {
+		"Name": "CensusRegion",
+		"EntityType": "TABLE",
+		"TableType": "EXTERNAL",
+		"Namespace": {
+			"SchemaName": null,
+			"DatabaseName": "Retail"
+		},
+		"StorageDescriptor": {
+			"Distribution": null,
+			"Columns": [
+				{
+					"Name": "CensusRegionId",
+					"Description": "The unique identifier of the Census Region.",
+					"OriginDataTypeName": {
+						"TypeName": "integer",
+						"IsComplexType": false,
+						"IsNullable": false,
+						"Length": 0,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "integer"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusRegion.cdm.json/CensusRegion",
+						"Name": "CensusRegionId"
+					}
+				},
+				{
+					"Name": "CensusRegionName",
+					"Description": "The name of the Census Region.",
+					"OriginDataTypeName": {
+						"TypeName": "string",
+						"IsComplexType": false,
+						"IsNullable": true,
+						"Length": 128,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "string"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusRegion.cdm.json/CensusRegion",
+						"Name": "CensusRegionName"
+					}
+				},
+				{
+					"Name": "NationId",
+					"Description": "The unique identifier of the Nation, which in this case is simply the US and anchors the geographic hierarchy.",
+					"OriginDataTypeName": {
+						"TypeName": "integer",
+						"IsComplexType": false,
+						"IsNullable": true,
+						"Length": 0,
+						"Precision": 0,
+						"Scale": 0,
+						"Properties": {
+							"HIVE_TYPE_STRING": "integer"
+						}
+					},
+					"BaseAttributeReference": {
+						"Entity": "CensusRegion.cdm.json/CensusRegion",
+						"Name": "NationId"
+					}
+				}
+			],
+			"ColumnSetEntityName": "1372bc79-da40-48dd-937b-00af559bed32",
+			"Format": {
+				"InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
+				"OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
+				"FormatType": "parquet",
+				"SerializeLib": "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe",
+				"Properties": {
+					"path": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Retail/CensusRegion",
+					"FormatTypeSetToDatabaseDefault": true
+				}
+			},
+			"Source": {
+				"Provider": "ADLS",
+				"Location": "abfss://azdwblob@azdwsynapse.dfs.core.windows.net/Retail/CensusRegion",
+				"Properties": {
+					"LinkedServiceName": "azsqlv3-WorkspaceDefaultStorage",
+					"LocationSetToDatabaseDefault": true
+				}
+			},
+			"Properties": {
+				"textinputformat.record.delimiter": ",",
+				"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+				"derivedModelAttributeInfo": "{\"attributeReferences\":{\"CensusRegionId\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"CensusRegionId\"},\"CensusRegionName\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"CensusRegionName\"},\"NationId\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"NationId\"}}}"
+			},
+			"Compressed": false,
+			"SerDeInfo": null,
+			"IsStoredAsSubdirectories": false
+		},
+		"Owner": null,
+		"CreateTime": 0,
+		"LastAccessTime": 0,
+		"Retention": 0,
+		"Temporary": false,
+		"IsRewriteEnabled": false,
+		"ViewOriginalText": null,
+		"ViewExpandedText": null,
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"OriginObjectId": null,
+		"IsSharedEntity": false,
+		"PublishStatus": "PUBLISHED",
+		"Properties": {
+			"DerivedModelEntityInfo": "{\"entityDirectives\":{\"baseEntityReference\":{\"name\":\"CensusRegion\",\"path\":\"CensusRegion.cdm.json/CensusRegion\"},\"description\":\"A \\\"Statistical\\\" Geographic Entity established by the Census Bureau in 1942 for the presentation of census data.   \\n\\nCensus regions are groupings of states and the District of Columbia that subdivide the United States for the presentation of census data. There are four census regions-Northeast, Midwest, South, and West. \\n\\nEach of the four census regions is divided into two or more census divisions. \\nBefore 1984, the Midwest region was named the North Central region. From 1910, when census regions were established, through the 1940s, there were three census regions-North, South, and West. Each census region is identified by a single-digit census code.\\n\\nPuerto Rico and the Island Areas are not part of any census region or census division.\\n\\nThere are four Regions:\\n- Northeast\\n- Midwest\\n- South\\n- West\\n\\nEach region is subdivided into Divisions.\",\"primaryKey\":[\"CensusRegionId\"],\"projectionInfo\":{\"attributes\":[{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"CensusRegionId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of the Census Region.\",\"isNullable\":false,\"name\":\"CensusRegionId\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"CensusRegionName\"},\"dataType\":\"string\",\"dataTypeLength\":128,\"description\":\"The name of the Census Region.\",\"isNullable\":true,\"name\":\"CensusRegionName\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"CensusRegion.cdm.json/CensusRegion\",\"name\":\"NationId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of the Nation, which in this case is simply the US and anchors the geographic hierarchy.\",\"isNullable\":true,\"name\":\"NationId\"}]}}}",
+			"Description": "A \"Statistical\" Geographic Entity established by the Census Bureau in 1942 for the presentation of census data.   \n\nCensus regions are groupings of states and the District of Columbia that subdivide the United States for the presentation of census data. There are four census regions-Northeast, Midwest, South, and West. \n\nEach of the four census regions is divided into two or more census divisions. \nBefore 1984, the Midwest region was named the North Central region. From 1910, when census regions were established, through the 1940s, there were three census regions-North, South, and West. Each census region is identified by a single-digit census code.\n\nPuerto Rico and the Island Areas are not part of any census region or census division.\n\nThere are four Regions:\n- Northeast\n- Midwest\n- South\n- West\n\nEach region is subdivided into Divisions.",
+			"DisplayFolderInfo": "{\"name\":\"Geography\",\"colorCode\":\"#8170C2\"}",
+			"PrimaryKeys": "CensusRegionId",
+			"spark.sql.sources.provider": "parquet",
+			"x-ms-usageinfo": "AzureSynapseDatabaseTemplate",
+			"spark.sql.sources.schema.numParts": "1",
+			"spark.sql.sources.schema.part.0": "{\"type\":\"struct\",\"fields\":[{\"name\":\"CensusRegionId\",\"type\":\"integer\",\"nullable\":false,\"metadata\":{}},{\"name\":\"CensusRegionName\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"NationId\",\"type\":\"integer\",\"nullable\":true,\"metadata\":{}}]}"
+		},
+		"ObjectVersion": 1,
+		"ObjectId": "108f4bbe-6363-4b68-abe9-b53a68737a12",
+		"Description": "A \"Statistical\" Geographic Entity established by the Census Bureau in 1942 for the presentation of census data.   \n\nCensus regions are groupings of states and the District of Columbia that subdivide the United States for the presentation of census data. There are four census regions-Northeast, Midwest, South, and West. \n\nEach of the four census regions is divided into two or more census divisions. \nBefore 1984, the Midwest region was named the North Central region. From 1910, when census regions were established, through the 1940s, there were three census regions-North, South, and West. Each census region is identified by a single-digit census code.\n\nPuerto Rico and the Island Areas are not part of any census region or census division.\n\nThere are four Regions:\n- Northeast\n- Midwest\n- South\n- West\n\nEach region is subdivided into Divisions."
+	},
+	"type": "TABLE"
+}

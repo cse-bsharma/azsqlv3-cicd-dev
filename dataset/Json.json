@@ -1,0 +1,33 @@
+{
+	"name": "Json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "file.json",
+				"fileSystem": "pilot"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Id": {
+					"type": "string"
+				},
+				"status": {
+					"type": "string"
+				},
+				"table": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

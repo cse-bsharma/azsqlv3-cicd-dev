@@ -1,0 +1,17 @@
+{
+	"name": "monitoring",
+	"properties": {
+		"content": {
+			"query": "select top(1) * from dbo.details\n\nselect * from sys.dm_pdw_exec_requests where status in ('running','suspended')\nselect * from sys.dm_pdw_exec_requests where command like '%create table stg%states%' order by start_time desc\nselect * from sys.dm_pdw_exec_requests where  request_id='QID20297'\nselect type,count(*) as parallel_thread from sys.dm_pdw_dms_external_work where request_id='QID21201' group by type \nselect type,count(*) as parallel_thead from sys.dm_pdw_dms_workers where request_id='QID20524' group by type \nselect * from sys.dm_pdw_dms_workers where request_id='QID19012' \nselect * from sys.dm_pdw_exec_requests where resource_class = 'mediumrc'\nselect * from sys.dm_pdw_request_steps where request_id='QID24979'\nselect count(*) from  stg.states UNION ALL\nselect count(*) from  stg.specialty UNION ALL\nselect count(*) from  stg.providers UNION ALL\nselect count(*) from  stg.geography UNION ALL\nselect count(*) from  stg.drugs;\nselect distinct operation_type from sys.dm_pdw_request_steps where request_id='QID24797'\nselect * from sys.dm_pdw_sql_requests where request_id='QID24519'\nselect * from stg.Details\nselect * from stg.Geography\nselect * from stg.states\nselect count_big(*) from stg.details;\nselect min(yearnpi) from details;\nselect year from details group by year;\nselect count_big(*) from providers;\ndrop table stg.Drugs;\ndrop table stg.Geography;\ndrop table stg.Providers;\ndrop table stg.Specialty;\ndrop table stg.States;\ndrop table stg.Details;\n\nexec sp_addrolemember 'xlargerc' , [bhassharma@microsoft.com]\n\ndrop procedure  hist_load_failure @tablename varchar(30);\ndrop procedure  hist_load_success @tablename varchar(30);\nCREATE PROCEDURE hist_load_success @tablename varchar(30),@load_start_time DATETIME2\nAS\nupdate stg.history_load_status set status='completed',load_start_time=@load_start_time,load_end_time=GETDATE()\nwhere table_name=@tablename\n\nCREATE PROCEDURE hist_load_failure @tablename varchar(30),@load_start_time DATETIME2\nAS\nupdate stg.history_load_status set status='failed',load_start_time=@load_start_time,load_end_time=GETDATE()\nwhere table_name=@tablename\n\ntruncate table stg.history_load_status\nexec hist_load_success 'Drugs'\n\nselect * from stg.history_load_status\nselect * from sys.dm_pdw_waits\nselect GETDATE()\n\ndrop table stg.history_load_status;\ncreate table stg.history_load_status\n(\n    table_name varchar(30),\n    status varchar(10),\n    load_start_time DATETIME2,\n    load_end_time DATETIME2\n)\nwith ( distribution= ROUND_ROBIN,HEAP);\n\ninsert into stg.history_load_status values ('Drugs',NULL,NULL,NULL);\ninsert into stg.history_load_status values ('Geography',NULL,NULL,NULL);\ninsert into stg.history_load_status values ('Providers',NULL,NULL,NULL);\ninsert into stg.history_load_status values ('Specialty',NULL,NULL,NULL);\ninsert into stg.history_load_status values ('States',NULL,NULL,NULL);\ninsert into stg.history_load_status values ('Details',NULL,NULL,NULL);\n\n\nselect table_name as tablename from stg.history_load_status where status is null or status= 'failed';\n\nselect table_name as tablename from stg.history_load_status where status != 'completed';\n\nselect * from sys.dm_pdw_exec_sessions where session_id='SID2516'",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "azsqldw",
+				"poolName": "azsqldw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

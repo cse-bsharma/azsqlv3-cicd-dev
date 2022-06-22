@@ -1,0 +1,21 @@
+{
+	"name": "Parquetnew",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "historydata/Details",
+				"fileSystem": "pilot"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

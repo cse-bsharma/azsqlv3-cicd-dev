@@ -1,0 +1,24 @@
+{
+	"name": "Daily_Refresh",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "ADX_DATA_LOAD",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-05-23T14:42:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

@@ -1,0 +1,106 @@
+{
+	"name": "AzureSynapseAnalyticsTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Prscrbr_NPI",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_Last_Org_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_First_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_City",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_State_Abrvtn",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_State_FIPS",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Prscrbr_Type_Src",
+				"type": "varchar"
+			},
+			{
+				"name": "Brnd_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Gnrc_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Tot_Clms",
+				"type": "varchar"
+			},
+			{
+				"name": "Tot_30day_Fills",
+				"type": "varchar"
+			},
+			{
+				"name": "Tot_Day_Suply",
+				"type": "varchar"
+			},
+			{
+				"name": "Tot_Drug_Cst",
+				"type": "varchar"
+			},
+			{
+				"name": "Tot_Benes",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Sprsn_Flag",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Tot_Clms",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Tot_30day_Fills",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Tot_Drug_Cst",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Tot_Day_Suply",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Bene_Sprsn_Flag",
+				"type": "varchar"
+			},
+			{
+				"name": "GE65_Tot_Benes",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "increment_stg"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

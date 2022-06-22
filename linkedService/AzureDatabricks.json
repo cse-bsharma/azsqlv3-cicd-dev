@@ -1,0 +1,21 @@
+{
+	"name": "AzureDatabricks",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-1485655059383590.10.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/7e416de3-c506-4776-8270-83fd73c6cc37/resourceGroups/cse-dw-pilot/providers/Microsoft.Databricks/workspaces/cse-az-adb",
+			"newClusterNodeType": "Standard_DS3_v2",
+			"newClusterNumOfWorker": "3:5",
+			"newClusterVersion": "7.3.x-scala2.12",
+			"newClusterInitScripts": []
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

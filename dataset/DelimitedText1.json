@@ -1,0 +1,125 @@
+{
+	"name": "DelimitedText1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "test.avro",
+				"fileSystem": "adx"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Obj\u0001\u0004\u0014avro.codec\bnull\u0016avro.schema�\u0006{\"type\":\"record\"",
+				"type": "String"
+			},
+			{
+				"name": "\"name\":\"EventData\"",
+				"type": "String"
+			},
+			{
+				"name": "\"namespace\":\"Microsoft.ServiceBus.Messaging\"",
+				"type": "String"
+			},
+			{
+				"name": "\"fields\":[{\"name\":\"SequenceNumber\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":\"long\"}",
+				"type": "String"
+			},
+			{
+				"name": "{\"name\":\"Offset\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":\"string\"}6",
+				"type": "String"
+			},
+			{
+				"name": "{\"name\":\"EnqueuedTimeUtc\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":\"string\"}8",
+				"type": "String"
+			},
+			{
+				"name": "{\"name\":\"SystemProperties\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":{\"type\":\"map\"10",
+				"type": "String"
+			},
+			{
+				"name": "\"values\":[\"long\"11",
+				"type": "String"
+			},
+			{
+				"name": "double12",
+				"type": "String"
+			},
+			{
+				"name": "string13",
+				"type": "String"
+			},
+			{
+				"name": "\"bytes\"]}}",
+				"type": "String"
+			},
+			{
+				"name": "{\"name\":\"Properties\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":{\"type\":\"map\"16",
+				"type": "String"
+			},
+			{
+				"name": "\"values\":[\"long\"17",
+				"type": "String"
+			},
+			{
+				"name": "double18",
+				"type": "String"
+			},
+			{
+				"name": "string19",
+				"type": "String"
+			},
+			{
+				"name": "bytes",
+				"type": "String"
+			},
+			{
+				"name": "\"null\"]}}",
+				"type": "String"
+			},
+			{
+				"name": "{\"name\":\"Body\"",
+				"type": "String"
+			},
+			{
+				"name": "\"type\":[\"null\"",
+				"type": "String"
+			},
+			{
+				"name": "\"bytes\"]}]}\u0000!��TbC_I�k�\u0018�{�\u001ap�+���\u0003\u001a2907716845888&5/5/2021 4:18:20 AM\u0002&x-opt-enqueued-time\u0000܎���^\u0000\u0000\u0002�]REC_KEY|awb_no|orig_svc_area|orig_fclty|dest_svc_area|dest_fclty|pu_dtm|route_cd|nw_prod_cd|loc_prod_cd|wght|vol_wght|bill_wght|cust_uom|pay_method|descr_goods|commodity_cd|decl_value|decl_ind|decl_value_curr_cd|insured_value|transport_collect_value|total_shipment_charges|charge_type|importer_id|payer_acct_no|shacct_no|shid|shname|shcontact_name|shphone|shaddr1|shaddr2|shaddr3|shbuilding|shstreet_no|shstreet_name|shcity|shdistrict|shstate_cd|shprovince|shcntry_cd|shzip|rcvr_id|rcvr_acct_no|rcvr_name|rcvr_contact_name|rcvr_phone|rcvr_addr1|rcvr_addr2|rcvr_addr3|rcvr_building_name|rcvr_street_no|rcvr_street_name|rcvr_city|rcvr_district|rcvr_state_cd|rcvr_province|rcvr_cntry_cd|rcvr_zip|rcvr_zip_flag|comat|dropbox_id|easyship_id|workstation_id|piece_no|booking_ref|salind|src|remark|dhl_uom|actual_wght|decl_vol_wght|est_dlvry_dtm|committed_dlvry_dtm|oversize_ind|cust_curr_cd|dest_mail_houcd|orig_mail_houcd|bill_type|ibr_id|booking_channel|depart_branch|distance|distance_uom|dom_svc_ind|upd_del_ins_ind|rcvr_email_addr|rcvr_mobile_no|dwh_ins_timestamp|orig_data_source_type_id|orig_data_source_id|orig_data_source_line_no|orig_load_dtm|shzip_flag|shzip_cleaned|shzip_sigchar|rcvr_zip_cleaned|rcvr_zip_sigchar|pu_timezone_dtm|egs_timestamp|orig_cntry_cd|dest_cntry_cd|gtw_file_header_creation_dtm|orig_name|orig_addr|message_ref|message_name|message_major_ver|message_minor_ver|message_id|src_message_id|event_recorder_id|event_recording_srvc_area|event_recording_fclty|event_recording_dtm|message_create_dtm|last_proc_dtm|tot_piece_count|tot_extracharge_count|tot_shipref_count|tot_shipdocline_count|prime_ref_rcvd_dtm|prime_ref_sent_dtm|SDCM_JSON",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

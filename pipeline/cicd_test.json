@@ -1,0 +1,19 @@
+{
+	"name": "cicd_test",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 5
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-09-27T12:08:28Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

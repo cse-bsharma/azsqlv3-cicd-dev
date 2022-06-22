@@ -1,0 +1,21 @@
+{
+	"name": "Parquetsqltab",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlv3-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "test",
+				"fileSystem": "pilot"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
